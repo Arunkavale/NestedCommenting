@@ -1,0 +1,14 @@
+{
+ 
+  "development": {
+    "PORT": 3443,
+    "MONGODB_URI": "mongodb://localhost:27017/rentomojo",
+    "JWT_SECRET": "rentoBike"
+  },
+  "production": {
+    "PORT": 3000,
+    "MONGODB_URI": "mongodb://172.31.21.47:27017/rentomojo",
+    "JWT_SECRET": "rentoBike"
+  }
+}
+
