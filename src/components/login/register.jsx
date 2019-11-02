@@ -38,9 +38,6 @@ export class Register extends React.Component {
       password: this.state.password,
       avatar : faker.image.avatar()
     };
-
-    console.log(userData);
-    
     this.registerUser(userData);
   };
 

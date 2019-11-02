@@ -1,5 +1,4 @@
 import React from 'react';
-import { tsPropertySignature } from '@babel/types';
 import CommentAction from './commentAction';
 
 import moment from 'moment'
@@ -7,24 +6,22 @@ import moment from 'moment'
 
 
 const CommentDetail = (props) =>{
-    console.log(props);
-    
     return (
         <div >
             <a href="/" className="avatar">
-            <img alt="avatar" src={props.author.avatar} />
+            <img alt="avatar" src={props.comment.user.avatar} />
             </a>
             <div className="content">
                 <a href="/" className="author">
-                    &nbsp;&nbsp;&nbsp;&nbsp;{props.author.username}
+                    &nbsp;&nbsp;&nbsp;&nbsp;{props.comment.user.username}
                 </a>
                 <div className="metadata">
                     <span className="date">
-                        {getDateText(props.timeAgo)}
+                        {getDateText(props.comment.createdDate)}
                     </span>
                 </div>
-                <div className="text"> &nbsp;&nbsp;&nbsp;&nbsp;{props.comment}</div>
-                <CommentAction user={props.author} comment={props.comment}></CommentAction>
+                <div className="text"> &nbsp;&nbsp;&nbsp;&nbsp;{props.comment.comment}</div>
+                <CommentAction comment={props.comment}></CommentAction>
             </div>
          </div>
     )

@@ -2,6 +2,8 @@ import React from 'react';
 import API from "../../apis";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { connect } from 'react-redux';
+import { fetchComments } from '../../actions';
 
 
 
@@ -15,25 +17,42 @@ class CommentInputBox extends React.Component{
         this.response = null;
       }
 
-    notify = () => toast("Wow so easy !");
+    notify = (msg) => toast.success(msg);
+
+ 
 
     submitComment =async ()=>{
-        if(this.props.btnText){
-          console.log(this.props.comment);
-        }else{
+        if(this.props.btnText === 'Reply'){
           let commentData={
             comment:this.state.comment,
-            user: JSON.parse(localStorage.getItem('user')) 
-        }
-        this.saveComment(commentData);
+            parentId:this.props.parentId
+          }
+          this.props.cancleClick();
+          this.saveComment(commentData);
+        }else if(this.props.btnText === 'Update'){
+          let commentData={
+            comment:this.state.comment
+          }
+          let response = await API.put('user/comment/'+this.props.commentId,commentData);
+          if(response.data.statusCode === 0 ){
+              this.props.fetchComments();
+              this.props.cancleClick();
+          }
+          console.log('update response' , response);
+          
+        }else{
+          let commentData={
+            comment:this.state.comment
+          }
+          this.saveComment(commentData);
       } 
     }
 
     saveComment =async (commentData) =>{
-        this.response = await API.post('user/comment',commentData);
-        if(this.response.data.statusCode === 0 ){
-            let toast = this.notify;
-            this.props.checkComment();
+        let response = await API.post('user/comment',commentData);
+        if(response.data.statusCode === 0 ){
+            this.notify(response.data.message);
+            this.props.fetchComments();
         }
     }
 
@@ -43,7 +62,6 @@ class CommentInputBox extends React.Component{
     };
 
     componentDidMount = () => {
-      console.log(this.props.commentList);
       if(this.props.comment && this.props.btnText ==="Update"){
         this.setState({comment:this.props.comment});
       }
@@ -60,10 +78,16 @@ class CommentInputBox extends React.Component{
                     </div>
                     { this.props.closeButton?<div className="ui button" onClick={this.props.cancleClick}>cancle</div>:null}
                   </div>
+                  <ToastContainer />
               </div>
             </form>
         )
     }
 }
 
-export default CommentInputBox;
+const mapStateToProps = state =>{
+  return { comments : state.comments }
+}
+
+export default connect(mapStateToProps,{fetchComments})(CommentInputBox);
+// export default CommentInputBox;

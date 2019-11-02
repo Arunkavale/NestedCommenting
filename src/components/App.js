@@ -1,13 +1,11 @@
 import React from "react";
 import "./App.scss";
 import { Login, Register } from "./login/index";
-import faker from 'faker';
-import API from "./../apis";
+import Navbar from "../components/comment/navbar";
 import CommentInputBox from './comment/commentInputBox';
 import CommentList from './comment/commentList';
+import { connect } from 'react-redux';
 import { fetchComments } from '../actions';
-
-import { Provider } from 'react-redux';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -24,12 +22,12 @@ class App extends React.Component {
     if(localStorage.getItem('user_auth')){
       this.setState({isLoggedinUser:true});
       this.getComment();
+      this.props.fetchComments();
     }
   }
 
-   getComment = async ()=>{
-    let comments = await API.get('user/comment');
-    this.setState({commentList:comments.data.comments});
+  getComment = async ()=>{
+    this.props.fetchComments();
   }
 
   callLogin = () =>{
@@ -61,8 +59,7 @@ class App extends React.Component {
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return (
-      <Provider store={store}>
-        <div className="App">
+      <div className="App">
           <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
               {isLogginActive && (
@@ -80,7 +77,6 @@ class App extends React.Component {
             />
           </div>
         </div>
-      </Provider>
     );
   }
 
@@ -88,11 +84,14 @@ class App extends React.Component {
 
   commentComponent(){
     return(
-      <div className="ui raised segment">
+      <div>
+      <Navbar></Navbar>
+      <div className="ui raised segment commentBox">
         <CommentInputBox commentList={this.state.commentList} checkComment={this.getComment}></CommentInputBox>
         <div className="ui comments">
-          <CommentList comments = {this.state.commentList}></CommentList>
+          <CommentList commentList={this.state.commentList}></CommentList>
         </div> 
+      </div>
       </div>
     )
   }
@@ -121,4 +120,10 @@ const RightSide = props => {
   );
 };
 
-export default App;
+
+const mapStateToProps = state =>{
+  return { comments : state.comments }
+}
+
+export default connect(mapStateToProps,{fetchComments})(App);
+// export default App;
