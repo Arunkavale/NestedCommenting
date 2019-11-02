@@ -1,6 +1,10 @@
 //Custom Fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
+.ui.comments .comment .comments {
+  margin: 0 0 .5em .5em;
+  padding: 1em 0 0em 2em ;
+}
 .App {
   text-align: center;
   display: flex;

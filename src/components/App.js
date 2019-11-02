@@ -5,7 +5,9 @@ import faker from 'faker';
 import API from "./../apis";
 import CommentInputBox from './comment/commentInputBox';
 import CommentList from './comment/commentList';
+import { fetchComments } from '../actions';
 
+import { Provider } from 'react-redux';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +38,7 @@ class App extends React.Component {
 
   successLogin = ()=>{
     this.setState({isLoggedinUser:true});
+    this.getComment();
   }
 
   changeState=()=> {
@@ -58,24 +61,26 @@ class App extends React.Component {
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return (
-      <div className="App">
-        <div className="login">
-          <div className="container" ref={ref => (this.container = ref)}>
-            {isLogginActive && (
-              <Login containerRef={ref => (this.current = ref)} onLogin = {this.successLogin} />
-            )}
-            {!isLogginActive && (
-              <Register containerRef={ref => (this.current = ref)}  onRegister = {this.callLogin} />
-            )}
+      <Provider store={store}>
+        <div className="App">
+          <div className="login">
+            <div className="container" ref={ref => (this.container = ref)}>
+              {isLogginActive && (
+                <Login containerRef={ref => (this.current = ref)} onLogin = {this.successLogin} />
+              )}
+              {!isLogginActive && (
+                <Register containerRef={ref => (this.current = ref)}  onRegister = {this.callLogin} />
+              )}
+            </div>
+            <RightSide
+              current={current}
+              currentActive={currentActive}
+              containerRef={ref => (this.rightSide = ref)}
+              onClick={this.changeState.bind(this)}
+            />
           </div>
-          <RightSide
-            current={current}
-            currentActive={currentActive}
-            containerRef={ref => (this.rightSide = ref)}
-            onClick={this.changeState.bind(this)}
-          />
         </div>
-      </div>
+      </Provider>
     );
   }
 
@@ -84,105 +89,9 @@ class App extends React.Component {
   commentComponent(){
     return(
       <div className="ui raised segment">
-        <CommentInputBox checkComment={this.getComment}></CommentInputBox>
+        <CommentInputBox commentList={this.state.commentList} checkComment={this.getComment}></CommentInputBox>
         <div className="ui comments">
           <CommentList comments = {this.state.commentList}></CommentList>
-        {/* <div className="comment">
-          <a className="avatar">
-          <img alt="avatar" src={faker.image.avatar()}></img>
-          </a>
-          <div className="content">
-            <a className="author">Matt</a>
-            <div className="metadata">
-              <span className="date">Today at 5:42PM</span>
-            </div>
-            <div className="text">
-              How artistic!
-            </div>
-            <div className="actions">
-              <a className="reply">Reply</a>
-            </div>
-          </div>
-        </div>
-        <div className="comment">
-          <a className="avatar">
-          <img alt="avatar" src={faker.image.avatar()}></img>
-
-          </a>
-          <div className="content">
-            <a className="author">Elliot Fu</a>
-            <div className="metadata">
-              <span className="date">Yesterday at 12:30AM</span>
-            </div>
-            <div className="text">
-              <p>This has been very useful for my research. Thanks as well!</p>
-            </div>
-            <div className="actions">
-              <a className="reply">Reply</a>
-            </div>
-          </div>
-          <div className="comments">
-            <div className="comment">
-              <a className="avatar">
-                <img alt="avatar" src={faker.image.avatar()}></img>
-
-              </a>
-              <div className="content">
-                <a className="author">Jenny Hess</a>
-                <div className="metadata">
-                  <span className="date">Just now</span>
-                </div>
-                <div className="text">
-                  Elliot you are always so right 
-                </div>
-                <div className="actions">
-                  <a className="reply">Reply</a>
-                </div>
-              </div>
-            </div>
-
-            <div className="comments">
-            <div className="comment">
-              <a className="avatar">
-                <img alt="avatar" src={faker.image.avatar()}></img>
-
-              </a>
-              <div className="content">
-                <a className="author">Jenny Hess</a>
-                <div className="metadata">
-                  <span className="date">Just now</span>
-                </div>
-                <div className="text">
-                  Elliot you are always so right 
-                </div>
-                <div className="actions">
-                  <a className="reply">Reply</a>
-                  <a className="reply">Delete</a>
-                </div>
-              </div>
-            </div>
-</div>
-
-
-
-          </div>
-        </div>
-        <div className="comment">
-          <a className="avatar">
-          </a>
-          <div className="content">
-            <a className="author">Joe Henderson</a>
-            <div className="metadata">
-              <span className="date">5 days ago</span>
-            </div>
-            <div className="text">
-              Dude, this is awesome. Thanks so much
-            </div>
-            <div className="actions">
-              <a className="reply">Reply</a>
-            </div>
-            </div>
-          </div>*/}
         </div> 
       </div>
     )

@@ -1,25 +1,40 @@
 import React from 'react';
 import CommentDetail from './commentDetails';
-import uuidv4 from  'uuid/v4';
 
 class CommentList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            email: "",
+            username:"",
+            password: "",
+            avatar :"",
+            errors: {}
+        };
     }
-
-    generateKey = (pre) => {
-        return `${ pre }_${ new Date().getTime() }`;
-    }
-    render(){
-        const comments = this.props.comments.map((comment)=>{
-            return <CommentDetail comment={comment.comment} key={uuidv4()}  author = {comment.user} timeAgo={comment.createdDate}></CommentDetail>
+    
+    renderComments = (comments) => (
+        comments.map(comment=>{
+            if(comment.children.length > 0){
+                return(
+                <div className="comment" key={comment._id}>
+                    <CommentDetail   comment={comment.comment} key={comment._id}  author = {comment.user} timeAgo={comment.createdDate}/>
+                    <div className="comments" >{this.renderComments(comment.children)}</div>
+                </div>)
+            }else{
+                return(
+                <div className="comment" key={comment._id}>
+                    <CommentDetail  key={comment._id} comment={comment.comment} key={comment._id}  author = {comment.user} timeAgo={comment.createdDate} />
+                </div>)
+            }
+          
         })
-        return (
-            <div >
-               {comments}
-            </div >
-        )
+    )
+  
+    render(){
+        return <div>{this.renderComments(this.props.comments)}</div>
     }
+    
 }
 
 export default CommentList;

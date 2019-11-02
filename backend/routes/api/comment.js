@@ -7,8 +7,6 @@ const _ = require('lodash');
 const userAuth = require('../../middleware/userAuth');
 
 const postComment = async (req,res) =>{
-    console.log("inside post comment ");
-    console.log(req.body);
     let comment =await new Comment({
         comment:req.body.comment,
         children:req.body.children,
@@ -19,12 +17,20 @@ const postComment = async (req,res) =>{
 }
 
 
+const putComment = async (req,res) =>{
+    let comment = await Comment.findOneAndUpdate({_id:req.params.id},{$set:{comment:req.body.comment , children:req.body.children}});
+    if(comment) return res.send({'message':'comment updated successfully','statusCode': 0});
+    res.send({'message':'Something went wrong'});
+}
+
+
 const getComment = async (req,res) =>{
     let comments =await Comment.find();
     res.send({'comments':comments , 'message':'list of comments'});
 }
 
 router.post("/comment",userAuth,tryCatch(postComment));
+router.put("/comment/:id",userAuth , tryCatch(putComment));
 router.get("/comment",tryCatch(getComment));
 
 module.exports = router;

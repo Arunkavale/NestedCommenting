@@ -11,24 +11,6 @@ let UserSchema = new mongoose.Schema({
  });
 
 
-let ChildrenSchema2 = new mongoose.Schema({
-    "comment":{
-        type:String
-    },
-    children:{
-        type:[ChildrenSchema]
-    },
-    parentId:{
-        type: mongoose.Schema.Types.ObjectId,
-    },
-    user:{
-        type:UserSchema
-    }
- },{timestamps: { createdAt: 'createdDate', updatedAt: 'updatedDate' }});
- 
-
-
-
  var ChildrenSchema = new mongoose.Schema({
     "comment":{
         type:String
@@ -37,7 +19,7 @@ let ChildrenSchema2 = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
     },
     children:{
-        type:[ChildrenSchema2]
+        type:[ChildrenSchema]
     },
     user:{
         type:UserSchema
@@ -57,7 +39,7 @@ let CommentSchema = new mongoose.Schema({
        type:String
    },
    children:{
-       type:[ChildrenSchema]
+       type:[Object]
    }
 },{timestamps: { createdAt: 'createdDate', updatedAt: 'updatedDate' }});
 

@@ -12,31 +12,42 @@ class CommentInputBox extends React.Component{
         this.state = {
           comment:""
         };
+        this.response = null;
       }
 
-      notify = () => toast("Wow so easy !");
- 
+    notify = () => toast("Wow so easy !");
 
     submitComment =async ()=>{
-        let commentData={
+        if(this.props.btnText){
+          console.log(this.props.comment);
+        }else{
+          let commentData={
             comment:this.state.comment,
             user: JSON.parse(localStorage.getItem('user')) 
         }
-      this.saveComment(commentData);
+        this.saveComment(commentData);
+      } 
     }
 
     saveComment =async (commentData) =>{
-        let response = await API.post('user/comment',commentData);
-        if(response.data.statusCode === 0 ){
-            // alert("Comment added successfully");
+        this.response = await API.post('user/comment',commentData);
+        if(this.response.data.statusCode === 0 ){
             let toast = this.notify;
             this.props.checkComment();
         }
     }
 
+  
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
+
+    componentDidMount = () => {
+      console.log(this.props.commentList);
+      if(this.props.comment && this.props.btnText ==="Update"){
+        this.setState({comment:this.props.comment});
+      }
+    }
 
     render(){
         return (
@@ -44,7 +55,10 @@ class CommentInputBox extends React.Component{
               <div className="field">
                   <div className="ui fluid action input">
                     <input type="text" placeholder="Write your comment here " id="comment" onChange={this.onChange} value={this.state.comment}></input>
-                    <div className="ui button" onClick={this.submitComment}>Comment</div>
+                    <div className="ui button" onClick={this.submitComment}>
+                    { this.props.btnText? this.props.btnText:"Comment"}
+                    </div>
+                    { this.props.closeButton?<div className="ui button" onClick={this.props.cancleClick}>cancle</div>:null}
                   </div>
               </div>
             </form>
