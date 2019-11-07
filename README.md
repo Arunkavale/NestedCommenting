@@ -87,6 +87,8 @@ Server.js -- nodejs server starting file ,
 --------------------------------------------------------------------------------------------------------------------------
 
 Backend --
+
+
     1 . there should be configured logger to logs all error and API called,
     2 . Server side caching useing redis to boost the server performance,
     3 . Code should be tested using unit testing with maximum test cases before going to production.
