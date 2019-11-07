@@ -44,12 +44,16 @@
 }
 
 .logout{
-  text-align: right;
   margin-right: 40px;
   margin-top: 20px;
-  font-size: 20px;
-  
 }
+
+.ui.secondary.button, .ui.secondary.buttons .button {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2000;
+}
+
 .commentBox{
   margin-left: 40px;
   margin-right: 40px;

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { fetchComments } from '../../actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import API from "../../apis";
+// import API from "../../apis";
+import axios from 'axios';
 
 class CommentAction extends React.Component {
     constructor(props){
@@ -26,13 +27,19 @@ class CommentAction extends React.Component {
     notify = (msg) => toast.success(msg);
 
     deleteComment = async (id)=>{
-        let response = await API.delete('user/comment/'+id);
+        // let response = await API.delete('user/comment/'+id);
+        const response = await  axios({
+            method: 'delete',
+            url: 'http://localhost:3443/api/v1/user/comment/'+id,
+            headers:{
+                "user_auth":JSON.parse(localStorage.getItem('user_auth'))
+            }
+          })
         if(response.data.statusCode === 0 ){
             this.props.fetchComments();
         }
-        this.notify(response.data.message);
+        // this.notify(response.data.message);
     }
-
     cancleClick=()=>{
         this.setState({isReplay:false , isEdit:false})
     }

@@ -1,3 +1,6 @@
+
+// this middleware executes when ever error occurred backend side 
+
 function handleError(e,res){
     console.log(e);
     if(e){

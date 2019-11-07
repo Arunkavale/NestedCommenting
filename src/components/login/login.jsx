@@ -1,8 +1,9 @@
 import React from "react";
 import loginImg from "../../assets/login.svg";
 import API from "../../apis";
-
-export class Login extends React.Component {
+import { connect } from 'react-redux';
+import { fetchComments } from '../../actions';
+ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +25,7 @@ export class Login extends React.Component {
       localStorage.setItem('user',JSON.stringify(response.data.data));
       localStorage.setItem('user_auth',JSON.stringify(response.headers.user_auth));
       this.props.onLogin();
+      await this.props.fetchComments();
     }else{
       alert(response.data.message);
     }
@@ -46,7 +48,7 @@ export class Login extends React.Component {
         <div className="header">Login</div>
         <div className="content">
           <div className="image">
-            <img src={loginImg} />
+            <img src={loginImg} alt="login"/>
           </div>
           <div className="form">
             <div className="form-group">
@@ -68,3 +70,11 @@ export class Login extends React.Component {
     );
   }
 }
+
+
+
+const mapStateToProps = state =>{
+  return { comments : state.comments }
+}
+
+export default connect(mapStateToProps,{fetchComments})(Login);

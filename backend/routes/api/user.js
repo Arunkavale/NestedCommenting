@@ -4,7 +4,11 @@ const User = mongoose.model('User');
 const tryCatch = require('./../../middleware/tryCatch');
 const _ = require('lodash');
 
-
+/**
+ * API for registering new user
+ * @param {request} req 
+ * @param {response} res 
+ */
 const registerUser = async (req,res) =>{
     let user =await new User({
         username:req.body.username,
@@ -17,6 +21,12 @@ const registerUser = async (req,res) =>{
 }
 
 
+
+/**
+ * API for login registered user
+ * @param {request} req 
+ * @param {response} res 
+ */
 const loginUser = async (req,res) =>{
     var body = _.pick(req.body, ['username', 'password']);
     let user =  User.findByCredentials(body.username, body.password).then((user) => {

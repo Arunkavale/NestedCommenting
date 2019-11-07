@@ -9,7 +9,7 @@ class Navbar extends React.Component {
     }
 
     render(){
-        return(<div className="logout">Logout</div>)
+        return(<div className=" ui  right floated secondary button "  onClick={this.props.logout}>Logout</div>)
     }
 }
 

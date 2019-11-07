@@ -43,6 +43,8 @@ UserSchema.methods.toJSON = function () {
   return _.pick(userObject, ['_id','username','email','phone','avatar']);
 };
 
+
+
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
@@ -54,10 +56,6 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 
-UserSchema.methods.generateAuthDummyToken = function() { 
-  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin },  process.env.JWT_SECRET);
-  return token;
-}
 
 UserSchema.methods.removeToken = function (token) {
   var user = this;

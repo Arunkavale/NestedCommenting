@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.scss";
-import { Login, Register } from "./login/index";
+import {  Register } from "./login/index";
+import Login from './login/login';
 import Navbar from "../components/comment/navbar";
 import CommentInputBox from './comment/commentInputBox';
 import CommentList from './comment/commentList';
@@ -22,8 +23,15 @@ class App extends React.Component {
     if(localStorage.getItem('user_auth')){
       this.setState({isLoggedinUser:true});
       this.getComment();
-      this.props.fetchComments();
+      // this.props.fetchComments();
     }
+  }
+
+  logout=()=>{
+    localStorage.removeItem('user_auth');
+    localStorage.removeItem('user');
+    this.setState({isLoggedinUser:false});
+    this.setState({isLogginActive:true});
   }
 
   getComment = async ()=>{
@@ -85,9 +93,9 @@ class App extends React.Component {
   commentComponent(){
     return(
       <div>
-      <Navbar></Navbar>
       <div className="ui raised segment commentBox">
-        <CommentInputBox commentList={this.state.commentList} checkComment={this.getComment}></CommentInputBox>
+      <Navbar logout={this.logout}></Navbar>
+        <CommentInputBox commentList={this.state.commentList} checkComment={this.getComment}></CommentInputBox> 
         <div className="ui comments">
           <CommentList commentList={this.state.commentList}></CommentList>
         </div> 
@@ -98,10 +106,10 @@ class App extends React.Component {
 
 
   render() {
-    if(!this.state.isLoggedinUser){
-      return this.loginComponents();
+    if(!this.state.isLoggedinUser){ // cheing if user is logged in or not
+      return this.loginComponents(); // if not then showing login and register component
     }else{
-      return this.commentComponent();
+      return this.commentComponent(); // else showing comment box component
     }
   }
 }

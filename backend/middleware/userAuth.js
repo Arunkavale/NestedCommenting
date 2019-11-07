@@ -1,5 +1,7 @@
 let {User} = require("./../models/user-model"); 
 
+
+// this middleware gets call for all APi and check is the users is autherized
 var userAuth = (req, res, next) => {
   var token = req.header('user_auth');
   User.findByToken(token).then((user) => {
