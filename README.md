@@ -20,6 +20,7 @@ Follwing are the steps of deploying the application on local machine
 npm i 
 
 following dependencies will going to install
+   
     "Faker": "^0.7.2", 
     "axios": "^0.19.0", 
     "bcryptjs": "^2.4.3", 
